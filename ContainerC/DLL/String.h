@@ -12,6 +12,7 @@ struct stdString {
 };
 
 stdString* stdStringCreate(const char* string);
+stdString* stdStringCreate_s(const char* string, char free_string);
 void stdStringDestroy(stdString** str);
 void stdStringAppend(stdString* str, const char* string);
 void stdStringInsert(stdString* str, const char* string, size_t index);
@@ -23,6 +24,7 @@ unsigned int stdStringSize(stdString* str);
 void stdStringPrint(stdString* str);
 
 char* AddChar(char* string_one, char* string_two);
+char* AddChar_s(char* string_one, char freeStringOne, char* string_two, char freeStringTwo);
 char* IntToString(int value);
 char* LongToString(long value);
 char* ShortToString(short value);
