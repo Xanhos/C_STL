@@ -1,8 +1,11 @@
-#pragma once
+#ifndef STRING_H_
+#define STRING_H_
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+
+#include "Export.h"
 
 typedef struct String String;
 typedef struct stdString stdString;
@@ -28,3 +31,5 @@ char* LongToString(long value);
 char* ShortToString(short value);
 char* FloatToString(float value);
 char* CharToString(char value);
+
+#endif STRING_H_

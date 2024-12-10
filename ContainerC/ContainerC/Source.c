@@ -24,19 +24,29 @@
 #include "List.h"
 #include <time.h>
 #include "String.h"
+#include "Pool.h"
 
 int main()
 {
-	stdString* str = NULL;
-	int i = 0;
-	while (1)
+	//stdString* str = NULL;
+	//int i = 0;
+	//while (1)
+	//{
+	//	str = stdStringCreate("");
+	//	char* t = AddChar("5", "6");
+	//	stdStringAppend(str, IntToString(i));
+	//	stdStringPrint(str);
+	//	stdStringDestroy(&str);
+	//	i++;
+	//}
+	stdPool* pool = stdPool_Create(sizeof(int), 0);
+	int index = 0;
+	while(1)
 	{
-		str = stdStringCreate("");
-		char* t = AddChar("5", "6");
-		stdStringAppend(str, IntToString(i));
-		stdStringPrint(str);
-		stdStringDestroy(&str);
-		i++;
+		AddElement(pool, &index);
+		printf("%d\n", *(int*)GetElement(pool, 0));
+		RemoveElement(pool, 0);
+		index++;
 	}
 
 }

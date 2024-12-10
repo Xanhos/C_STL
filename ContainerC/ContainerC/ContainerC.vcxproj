@@ -129,13 +129,16 @@
   <ItemGroup>
     <ClCompile Include="List.c" />
     <ClCompile Include="Map.c" />
+    <ClCompile Include="Pool.c" />
     <ClCompile Include="Source.c" />
     <ClCompile Include="String.c" />
     <ClCompile Include="Vector.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Export.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Pool.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>

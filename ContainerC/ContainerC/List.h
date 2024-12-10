@@ -20,17 +20,14 @@
 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#pragma once
+#ifndef LIST_H_
+#define LIST_H_
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 
-#ifdef DLL_EXPORTS
-#define LIBSTD_API __declspec(dllexport)
-#else
-#define LIBSTD_API __declspec(dllimport)
-#endif
+#include "Export.h"
 
 #define STD_LIST_CREATE(type, size, ...) \
   stdList_Create(sizeof(type), size, __VA_ARGS__)
@@ -41,12 +38,6 @@
 #define STD_LIST_PUSHBACK(list,type, ...)\
 	list->push_back(&list, (const void*)&(type)__VA_ARGS__)
 
-#define STD_LIST_GETDATA(list,type,index) ((type*)list->getData(list, index))
-
-#define FOR_EACH_LIST(list, type, it_name ,func)for(int iterator = 0; iterator < list->size(list); iterator++)\
-    {\
-    type* it_name = STD_LIST_GETDATA(list,type,iterator);\
-    func}
 
 typedef struct List List;
 typedef struct stdList stdList;
@@ -99,3 +90,5 @@ struct stdList
 };
 
 stdList* stdList_Create(size_t elementSize, int size, ...);
+
+#endif LIST_H_

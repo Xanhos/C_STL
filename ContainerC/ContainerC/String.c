@@ -31,7 +31,7 @@ stdString* stdStringCreate(const char* string)
 	{
 		for (int iterator = 0; iterator < ressources_list->size(ressources_list); iterator++)
 		{
-			char** it_name = STD_LIST_GETDATA(ressources_list, char*, iterator);
+			char** it_name = STD_GETDATA(ressources_list, char*, iterator);
 			free(*it_name);
 		}
 		ressources_list->clear(&ressources_list);
@@ -64,7 +64,7 @@ void stdStringAppend(stdString* str, const char* string)
 	{
 		for (int iterator = 0; iterator < ressources_list->size(ressources_list); iterator++)
 		{
-			char** it_name = STD_LIST_GETDATA(ressources_list, char*, iterator);
+			char** it_name = STD_GETDATA(ressources_list, char*, iterator);
 			free(*it_name);
 		}
 		ressources_list->clear(&ressources_list);
