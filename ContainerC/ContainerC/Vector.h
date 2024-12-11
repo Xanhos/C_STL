@@ -66,14 +66,14 @@ struct stdVector
 	/// \param stdVector** Adress of the vector (example : &vector)
 	/// \param void* Element to push
 	////////////////////////////////////////////////////////////
-	void (*push_back)(stdVector**, void*);
+	void (*push_back)(stdVector*, void*);
 	////////////////////////////////////////////////////////////
 	/// \brief Delete the element pointed to by the index
 	///
 	/// \param stdVector** Adress of the vector (example : &vector)
 	/// \param int Index to delete
 	////////////////////////////////////////////////////////////
-	void (*erase)(stdVector**, int);
+	void (*erase)(stdVector*, int);
 	////////////////////////////////////////////////////////////
 	/// \brief Return the size of the vector
 	///
@@ -92,7 +92,7 @@ struct stdVector
 	///
 	/// \param stdVector** Address of the vector (example: &vector).
 	////////////////////////////////////////////////////////////
-	void (*clear)(stdVector**);
+	void (*clear)(stdVector*);
 	////////////////////////////////////////////////////////////
 	/// \brief Destroy the vector, use it ONLY when you don't need the vector anymore.
 	///
@@ -105,14 +105,14 @@ struct stdVector
 	/// \param stdVector** Address of the vector (example: &vector).
 	/// \param unsigned int Number of elements to reserve memory for.
 	////////////////////////////////////////////////////////////
-	void (*reserve)(stdVector**, unsigned int);
+	void (*reserve)(stdVector*, unsigned int);
 
 	////////////////////////////////////////////////////////////
 	/// \brief Reduces the capacity of the vector to fit its size.
 	///
 	/// \param stdVector** Address of the vector (example: &vector).
 	////////////////////////////////////////////////////////////
-	void (*shrink_to_fit)(stdVector**);
+	void (*shrink_to_fit)(stdVector*);
 
 	////////////////////////////////////////////////////////////
 	/// \brief Retrieves the current capacity of the vector.

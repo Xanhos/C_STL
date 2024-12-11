@@ -32,4 +32,5 @@ stdPool* stdPool_Create(size_t type, unsigned int size, ...);
 void AddElement(stdPool* pool, void* element);
 void RemoveElement(stdPool* pool, unsigned int index);
 void* GetElement(stdPool* pool, unsigned int index);
+size_t GetSize(stdPool* pool);
 #endif POOL_H_

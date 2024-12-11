@@ -38,7 +38,6 @@ struct Link
 struct List
 {
 	Link* listBegin;
-	Link* midList;
 	Link* endList;
 	size_t elementSize;
 	unsigned int size;
@@ -66,26 +65,17 @@ static void* stdList_GetData(stdList* listBegin, unsigned int index)
 	}
 }
 
-static int HigherProximity(int index, int _begin, int _mid, int _end)
+static int HigherProximity(int index, int _begin, int _end)
 {
-	int mid = _mid;
+	int result = 0;
 	_begin = abs(_begin - index);
-	_mid = abs(_mid - index);
 	_end = abs(_end - index);
-	ITDIRECTION result = 0;
 
-	if (MIN(_begin, _end) == _begin && MIN(_begin, _mid) == _begin)
+	if (MIN(_begin, _end) == _begin)
 		result = BEGIN;
-	else if (MIN(_begin, _end) == _end && MIN(_end, _mid) == _end)
-		result = END;
 	else
-		result = MID;
-
-	if (result == MID)
-	{
-		result = ((mid - index) <= 0 ? MID : REVERSE);
-	}
-
+		result = END;
+	
 	return result;
 
 }
@@ -94,7 +84,7 @@ static int HigherProximity(int index, int _begin, int _mid, int _end)
 static void* stdList_GetData2(stdList* listBegin, unsigned int index)
 {
 	Link* tmpLink;
-	switch (HigherProximity(index, listBegin->_Data->listBegin->id, listBegin->_Data->midList ? listBegin->_Data->midList->id : 0, listBegin->_Data->endList->id))
+	switch (HigherProximity(index, listBegin->_Data->listBegin->id, listBegin->_Data->endList->id))
 	{
 	case BEGIN:
 		tmpLink = listBegin->_Data->listBegin;
@@ -113,25 +103,7 @@ static void* stdList_GetData2(stdList* listBegin, unsigned int index)
 				return ((char*)tmpLink->data);
 			tmpLink = tmpLink->pBack;
 		}
-		break;
-	case MID:
-		tmpLink = listBegin->_Data->midList;
-		while (tmpLink != NULL)
-		{
-			if (tmpLink->id == index)
-				return ((char*)tmpLink->data);
-			tmpLink = tmpLink->pBack;
-		}
-		break;
-	case REVERSE:
-		tmpLink = listBegin->_Data->midList;
-		while (tmpLink != NULL)
-		{
-			if (tmpLink->id == index)
-				return ((char*)tmpLink->data);
-			tmpLink = tmpLink->pNext;
-		}
-		break;
+		break;	
 	default:
 		break;
 	}
@@ -149,10 +121,6 @@ static void deleteLink(Link** listBegin, Link* element, List** list)
 		if (tmp != NULL)
 			tmp->pBack = NULL;
 
-		if ((*list)->size % 2 == 1 && (*list)->size != 1)
-		{
-			(*list)->midList = (*list)->midList->pNext;
-		}
 
 
 		free(element->data);
@@ -180,21 +148,21 @@ static void deleteLink(Link** listBegin, Link* element, List** list)
 	}
 }
 
-static void stdList_Erase(stdList** listBegin, unsigned int index)
+static void stdList_Erase(stdList* listBegin, unsigned int index)
 {
-	Link* tmpLink = (*listBegin)->_Data->listBegin;
+	Link* tmpLink = listBegin->_Data->listBegin;
 	while (tmpLink != NULL)
 	{
 		if (tmpLink->id == index)
 		{
-			deleteLink(&(*listBegin)->_Data->listBegin, tmpLink, &(*listBegin)->_Data);
+			deleteLink(&listBegin->_Data->listBegin, tmpLink, &listBegin->_Data);
 			break;
 		}
 		tmpLink = tmpLink->pNext;
 	}
 
-	int newId = (*listBegin)->_Data->size - 1;
-	tmpLink = (*listBegin)->_Data->listBegin;
+	int newId = listBegin->_Data->size - 1;
+	tmpLink = listBegin->_Data->listBegin;
 	while (tmpLink != NULL)
 	{
 		if (tmpLink->id == newId)
@@ -205,9 +173,9 @@ static void stdList_Erase(stdList** listBegin, unsigned int index)
 
 }
 
-static void stdList_Clear(stdList** listBegin)
+static void stdList_Clear(stdList* listBegin)
 {
-	int size = (*listBegin)->_Data->size - 1;
+	int size = listBegin->_Data->size - 1;
 	for (int i = size; i >= 0; i--)
 	{
 		stdList_Erase(listBegin, i);
@@ -220,7 +188,10 @@ static void AddElement(Link** listBegin, Link* element, List** list)
 	element->pNext = (*listBegin);
 	(*listBegin) = element;
 	Link* tmp = (*listBegin);
-	while (tmp != NULL)
+	if ((*list)->endList)
+		tmp = (*list)->endList;
+
+	do
 	{
 		if (tmp->id == element->id - 1)
 		{
@@ -230,28 +201,26 @@ static void AddElement(Link** listBegin, Link* element, List** list)
 		{
 			(*list)->endList = tmp;
 		}
-		else if (tmp->id == ((*list)->size - 1) / 2)
-			(*list)->midList = tmp;
 		tmp = tmp->pNext;
-	}
+	} while (tmp != NULL);
 }
 
-static void stdList_Add(stdList** listBegin, void* element)
+static void stdList_Add(stdList* listBegin, void* element)
 {
 	Link* tmp = (Link*)calloc(1, sizeof(Link));
 	assert(tmp != NULL);
-	tmp->data = calloc(1, (*listBegin)->_Data->elementSize);
+	tmp->data = calloc(1, listBegin->_Data->elementSize);
 	char* tempData = (char*)tmp->data;
 	assert(tempData != NULL);
-	memcpy(tempData, element, (*listBegin)->_Data->elementSize);
-	tmp->id = (*listBegin)->_Data->size++;
-	AddElement(&(*listBegin)->_Data->listBegin, tmp, &(*listBegin)->_Data);
+	memcpy(tempData, element, listBegin->_Data->elementSize);
+	tmp->id = listBegin->_Data->size++;
+	AddElement(&listBegin->_Data->listBegin, tmp, &listBegin->_Data);
 
 }
 
 static void stdList_Destroy(stdList** listBegin)
 {
-	stdList_Clear(listBegin);
+	stdList_Clear(*listBegin);
 	free((*listBegin)->_Data);
 	free(*listBegin);
 	*listBegin = NULL;
@@ -266,13 +235,14 @@ stdList* stdList_Create(size_t elementSize, int size, ...)
 	assert(list != NULL);
 	list->_Data = (List*)calloc(1, sizeof(List));
 	assert(list->_Data != NULL);
-	list->_Data->size = size;
+	list->_Data->size = 0;
 	list->_Data->elementSize = elementSize;
 	list->_Data->listBegin = NULL;
 
 	for (int i = 0; i < size; i++)
 	{
 		void* vaNext = va_arg(params, void*);
+		stdList_Add(list, vaNext);/*
 		Link* tmp = (Link*)calloc(1, sizeof(Link));
 		assert(tmp != NULL);
 		tmp->id = i;
@@ -280,7 +250,7 @@ stdList* stdList_Create(size_t elementSize, int size, ...)
 		char* tempData = (char*)tmp->data;
 		assert(tempData != NULL);
 		memcpy(tempData, vaNext, elementSize);
-		AddElement(&list->_Data->listBegin, tmp, &list->_Data);
+		AddElement(&list->_Data->listBegin, tmp, &list->_Data);*/
 	}
 
 	list->size = &stdList_GetSize;

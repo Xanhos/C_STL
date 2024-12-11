@@ -54,14 +54,14 @@ struct stdList
 	/// \param stdList** Adress of the list (example : &list)
 	/// \param void* Element to push
 	////////////////////////////////////////////////////////////
-	void (*push_back)(stdList**, void*);
+	void (*push_back)(stdList*, void*);
 	////////////////////////////////////////////////////////////
 	/// \brief Delete the element pointed to by the index
 	///
 	/// \param stdList** Adress of the list (example : &list)
 	/// \param int Index to delete
 	////////////////////////////////////////////////////////////
-	void (*erase)(stdList**, unsigned int);
+	void (*erase)(stdList*, unsigned int);
 	////////////////////////////////////////////////////////////
 	/// \brief Return the data pointed to by the index. You need to cast the return value to the desired type (example: (int)list->getData(&list, 0) if the list is storing int).
 	///
@@ -80,7 +80,7 @@ struct stdList
 	///
 	/// \param stdList** Address of the list (example: &list).
 	////////////////////////////////////////////////////////////
-	void (*clear)(stdList**);
+	void (*clear)(stdList*);
 	////////////////////////////////////////////////////////////
 	/// \brief Destroy the list, use it ONLY when you don't need the list anymore.
 	///

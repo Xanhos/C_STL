@@ -59,47 +59,47 @@ static int stdVector_getSize(stdVector* T)
 	return T->_Data->size;
 }
 
-static void stdVector_Add(stdVector** T, void* element)
+static void stdVector_Add(stdVector* T, void* element)
 {
-	if (((*T)->_Data->elementSize * (*T)->_Data->size) < ((*T)->_Data->elementSize * (*T)->_Data->memoryCapacity))
+	if ((T->_Data->elementSize * T->_Data->size) < (T->_Data->elementSize * T->_Data->memoryCapacity))
 	{	
-		char* tempData = (char*)(*T)->_Data->type;
-		memcpy(tempData + (*T)->_Data->size * (*T)->_Data->elementSize, element, (*T)->_Data->elementSize);
-		(*T)->_Data->size++;
+		char* tempData = (char*)T->_Data->type;
+		memcpy(tempData + T->_Data->size * T->_Data->elementSize, element, T->_Data->elementSize);
+		T->_Data->size++;
 	}
 	else
 	{
-		(*T)->_Data->memoryCapacity *= 2;
+		T->_Data->memoryCapacity *= 2;
 
-		void* temp = realloc((*T)->_Data->type, ((*T)->_Data->memoryCapacity * (*T)->_Data->elementSize));
+		void* temp = realloc(T->_Data->type, (T->_Data->memoryCapacity * T->_Data->elementSize));
 
 		char* tempData = (char*)temp;
 
 		assert(tempData != NULL);
 
-		memcpy(tempData + (*T)->_Data->size * (*T)->_Data->elementSize, element, (*T)->_Data->elementSize);
+		memcpy(tempData + T->_Data->size * T->_Data->elementSize, element, T->_Data->elementSize);
 
-		(*T)->_Data->size++;
+		T->_Data->size++;
 
-		(*T)->_Data->type = temp;
+		T->_Data->type = temp;
 
 	}
 }
 
-static void stdVector_Remove(stdVector** T, int index)
+static void stdVector_Remove(stdVector* T, int index)
 {
-	VEC_OFR((*T), index);	
+	VEC_OFR(T, index);	
 
-	char* tempData = (char*)(*T)->_Data->type;
+	char* tempData = (char*)T->_Data->type;
 
-	int offset = (*T)->_Data->size - index;
+	int offset = T->_Data->size - index;
 
 	for (int i = 0; i < offset; i++)
 	{
-		memcpy(tempData + (index + i)* (*T)->_Data->elementSize, tempData + (index + i + 1) * (*T)->_Data->elementSize, (*T)->_Data->elementSize);
+		memcpy(tempData + (index + i)* T->_Data->elementSize, tempData + (index + i + 1) * T->_Data->elementSize, T->_Data->elementSize);
 	}
 
-	(*T)->_Data->size--;
+	T->_Data->size--;
 }
 
 
@@ -111,52 +111,52 @@ static void stdVector_Destructor(stdVector** T)
 	(*T) = NULL;
 }
 
-static void stdVector_Clear(stdVector** T)
+static void stdVector_Clear(stdVector* T)
 {
-	(*T)->_Data->memoryCapacity = 1;
-	void* temp = calloc((*T)->_Data->memoryCapacity, (*T)->_Data->elementSize);
+	T->_Data->memoryCapacity = 1;
+	void* temp = calloc(T->_Data->memoryCapacity, T->_Data->elementSize);
 
-	free((*T)->_Data->type);
-	(*T)->_Data->type = temp;
+	free(T->_Data->type);
+	T->_Data->type = temp;
 
-	(*T)->_Data->size = 0;
+	T->_Data->size = 0;
 }
 
 
 
 
-static void stdVector_Reserve(stdVector** T, unsigned int newCapacity)
+static void stdVector_Reserve(stdVector* T, unsigned int newCapacity)
 {
-	if(newCapacity > (*T)->_Data->memoryCapacity)
+	if(newCapacity > T->_Data->memoryCapacity)
 	{
-		void* temp = realloc((*T)->_Data->type, newCapacity * (*T)->_Data->elementSize);
+		void* temp = realloc(T->_Data->type, newCapacity * T->_Data->elementSize);
 
-		(*T)->_Data->memoryCapacity = newCapacity;
+		T->_Data->memoryCapacity = newCapacity;
 
-		(*T)->_Data->type = temp;
+		T->_Data->type = temp;
 	}
 }
 
-static void stdVector_ShrinkToFit(stdVector** T)
+static void stdVector_ShrinkToFit(stdVector* T)
 {
-	(*T)->_Data->memoryCapacity = (*T)->_Data->size;
+	T->_Data->memoryCapacity = T->_Data->size;
 
 	
-	void* temp = calloc((*T)->_Data->memoryCapacity, (*T)->_Data->elementSize);
+	void* temp = calloc(T->_Data->memoryCapacity, T->_Data->elementSize);
 
 	char* newData = (char*)temp;
-	char* oldData = (char*)(*T)->_Data->type;
+	char* oldData = (char*)T->_Data->type;
 
 
-	for (int i = 0; i < (*T)->_Data->size; i++)
+	for (int i = 0; i < T->_Data->size; i++)
 	{		
-		memcpy(newData + i * (*T)->_Data->elementSize, oldData + i * (*T)->_Data->elementSize, (*T)->_Data->elementSize);	
+		memcpy(newData + i * T->_Data->elementSize, oldData + i * T->_Data->elementSize, T->_Data->elementSize);	
 	}
 
 	assert(temp != NULL);
 
-	free((*T)->_Data->type);
-	(*T)->_Data->type = temp;
+	free(T->_Data->type);
+	T->_Data->type = temp;
 }
 
 static int stdVector_GetCapacity(stdVector* T)
@@ -190,7 +190,7 @@ stdVector* stdVector_Create(size_t T, unsigned int size, ...)
 	for (int i = 0; i < size; i++)
 	{
 		void* vaNext = va_arg(params, void*);
-		stdVector_Add(&vector, vaNext);
+		stdVector_Add(vector, vaNext);
 	}
 
 	vector->erase = &stdVector_Remove;

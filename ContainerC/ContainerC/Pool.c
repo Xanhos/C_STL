@@ -14,10 +14,10 @@ struct Pool
 {
 	stdVector* container;
 	size_t elementSize;
-
+	size_t elementDeleted;
 };
 
-stdPool* stdPool_Create(size_t type, unsigned int size,...)
+stdPool* stdPool_Create(size_t type, unsigned int size, ...)
 {
 	stdPool* pool = (stdPool*)calloc(size, type);
 	assert(pool);
@@ -26,7 +26,8 @@ stdPool* stdPool_Create(size_t type, unsigned int size,...)
 	pool->_Data = data;
 
 	data->elementSize = type;
-	data->container = stdVector_Create(sizeof(Data), size);
+	data->elementDeleted = 0;
+	data->container = stdVector_Create(sizeof(Data), 0);
 	va_list params;
 	va_start(params, size);
 
@@ -47,10 +48,11 @@ stdPool* stdPool_Create(size_t type, unsigned int size,...)
 void AddElement(stdPool* pool, void* element)
 {
 	stdVector* vector = pool->_Data->container;
-	FOR_EACH(vector, Data, i, it, 
+	FOR_EACH(vector, Data, i, it,
 		if (it->isFree)
 		{
 			memcpy_s(it->data, pool->_Data->elementSize, element, pool->_Data->elementSize);
+			pool->_Data->elementDeleted--;
 			return;
 		});
 	Data tmp = {
@@ -69,9 +71,10 @@ void RemoveElement(stdPool* pool, unsigned int index)
 		if (i == index)
 		{
 			it->isFree = true;
+			pool->_Data->elementDeleted++;
 			return;
 		}
-		);
+			);
 
 }
 
@@ -79,6 +82,28 @@ void* GetElement(stdPool* pool, unsigned int index)
 {
 	VEC_OFR(pool->_Data->container, index);
 
-	Data* it = STD_GETDATA(pool->_Data->container, Data, index);
-	return it->data;
+	int id = 0;
+	
+
+	FOR_EACH(pool->_Data->container, Data, i, it,
+		if (id == index && !it->isFree)
+		{
+			return it->data;
+		}
+	if (!it->isFree)
+	{
+		id++;
+	}
+
+		);
+
+
+	printf("Pool out of range !\n");
+	abort();
+
+}
+
+size_t GetSize(stdPool* pool)
+{
+	return pool->_Data->container->size(pool->_Data->container) - pool->_Data->elementDeleted;
 }

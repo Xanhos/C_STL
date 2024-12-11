@@ -28,6 +28,33 @@
 
 int main()
 {
+	printf("List\n");
+	stdList* list = STD_LIST_CREATE(int, 3, STD_CONVERT(int, { 0 }), STD_CONVERT(int, { 1 }), STD_CONVERT(int, { 2 }));
+	list->push_back(list, STD_CONVERT(int, { 4 }));
+	list->erase(list, 2);
+	for (int i = 0; i < list->size(list); i++)
+	{
+		printf("%d\n", *STD_GETDATA(list, int, i));
+	}
+	list->destroy(&list);
+
+
+	int* a= calloc(4, 2);
+
+	printf("Vector\n");
+
+	stdVector* vector = STD_VECTOR_CREATE(int, 3, STD_CONVERT(int, { 0 }), STD_CONVERT(int, { 1 }), STD_CONVERT(int, { 2 }));
+	vector->push_back(vector, STD_CONVERT(int, { 4 }));
+	vector->erase(vector, 2);
+	for (int i = 0; i < vector->size(vector); i++)
+	{
+		printf("%d\n", *STD_GETDATA(vector, int, i));
+	}
+	vector->destroy(&vector);
+
+
+
+
 	//stdString* str = NULL;
 	//int i = 0;
 	//while (1)
@@ -39,16 +66,19 @@ int main()
 	//	stdStringDestroy(&str);
 	//	i++;
 	//}
-	stdPool* pool = stdPool_Create(sizeof(int), 0);
-	int index = 0;
-	while(1)
-	{
-		AddElement(pool, &index);
-		printf("%d\n", *(int*)GetElement(pool, 0));
-		RemoveElement(pool, 0);
-		index++;
-	}
 
+	printf("Pool\n");
+	stdPool* pool = stdPool_Create(sizeof(int), 4, STD_CONVERT(int, { 0 }), STD_CONVERT(int, { 1 }), STD_CONVERT(int, { 2 }, STD_CONVERT(int, { 3 })));
+	int index = 0;
+	RemoveElement(pool, 2);
+
+	for (int i = 0; i < GetSize(pool); i++)
+	{
+		GetSize(pool);
+		printf("%d\n", *(int*)GetElement(pool, i));
+	}
+	
+	main();
 }
 
 
