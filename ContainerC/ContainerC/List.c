@@ -120,8 +120,8 @@ static void deleteLink(Link** listBegin, Link* element, List** list)
 		(*listBegin) = tmp;
 		if (tmp != NULL)
 			tmp->pBack = NULL;
-
-
+		else (*list)->endList = NULL;
+		
 
 		free(element->data);
 		free(element);
@@ -129,16 +129,12 @@ static void deleteLink(Link** listBegin, Link* element, List** list)
 	}
 	else
 	{
-		Link* tmp = (*listBegin);
-		while (tmp->pNext != element)
+		Link* next = element->pNext;
+		if (next)
 		{
-			tmp = tmp->pNext;
+			element->pBack->pNext = next;
+			next->pBack = element->pBack;
 		}
-		tmp->pNext = element->pNext;
-		element->pNext->pBack = tmp;
-
-		if ((*list)->endList == element)
-			(*list)->endList = element->pBack;
 
 
 		free(element->data);
@@ -185,7 +181,19 @@ static void stdList_Clear(stdList* listBegin)
 
 static void AddElement(Link** listBegin, Link* element, List** list)
 {
-	element->pNext = (*listBegin);
+	if ((*list)->listBegin == NULL)
+	{
+		*listBegin = element;
+		(*list)->endList = element;
+	}
+	else
+	{
+		(*list)->endList->pNext = element;
+		element->pBack = (*list)->endList;
+		(*list)->endList = element;
+	}
+	
+	/*element->pNext = (*listBegin);
 	(*listBegin) = element;
 	Link* tmp = (*listBegin);
 	if ((*list)->endList)
@@ -202,7 +210,7 @@ static void AddElement(Link** listBegin, Link* element, List** list)
 			(*list)->endList = tmp;
 		}
 		tmp = tmp->pNext;
-	} while (tmp != NULL);
+	} while (tmp != NULL);*/
 }
 
 static void stdList_Add(stdList* listBegin, void* element)

@@ -9,7 +9,6 @@
 
 	Copyright (c) 2024 GRALLAN Yann
 
-
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 	in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 	copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,8 +19,10 @@
 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #ifndef LIST_H_
 #define LIST_H_
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -32,12 +33,11 @@
 #define STD_LIST_CREATE(type, size, ...) \
   stdList_Create(sizeof(type), size, __VA_ARGS__)
 
-#define STD_CONVERT(type,...)\
+#define STD_CONVERT(type, ...) \
 	(const void*)&(type)__VA_ARGS__
 
-#define STD_LIST_PUSHBACK(list,type, ...)\
+#define STD_LIST_PUSHBACK(list, type, ...) \
 	list->push_back(&list, (const void*)&(type)__VA_ARGS__)
-
 
 typedef struct List List;
 typedef struct stdList stdList;
@@ -45,50 +45,71 @@ typedef struct stdList stdList;
 struct stdList
 {
 	////////////////////////////////////////////////////////////
-	/// \brief Contains all the data of the list, DO NOT USE IT AT ALL
+	/// \brief Contains all the data of the list. DO NOT USE IT DIRECTLY.
 	////////////////////////////////////////////////////////////
 	List* _Data;
+
 	////////////////////////////////////////////////////////////
-	/// \brief Push a new element at the back of the list
+	/// \brief Push a new element at the back of the list.
 	///
-	/// \param stdList** Adress of the list (example : &list)
-	/// \param void* Element to push
+	/// \param stdList* The list you are using.
+	/// \param void* The element to push.
 	////////////////////////////////////////////////////////////
 	void (*push_back)(stdList*, void*);
+
 	////////////////////////////////////////////////////////////
-	/// \brief Delete the element pointed to by the index
+	/// \brief Delete the element at the specified index.
 	///
-	/// \param stdList** Adress of the list (example : &list)
-	/// \param int Index to delete
+	/// \param stdList* The list you are using.
+	/// \param unsigned int The index of the element to delete.
 	////////////////////////////////////////////////////////////
 	void (*erase)(stdList*, unsigned int);
+
 	////////////////////////////////////////////////////////////
-	/// \brief Return the data pointed to by the index. You need to cast the return value to the desired type (example: (int)list->getData(&list, 0) if the list is storing int).
+	/// \brief Retrieve the data at the specified index.
+	///        The return value must be cast to the desired type
+	///        (e.g., `(int)list->getData(&list, 0)` if the list stores integers).
 	///
-	/// \param stdList* The list you are using
-	/// \param int Index to retrieve.
+	/// \param stdList* The list you are using.
+	/// \param unsigned int The index of the element to retrieve.
+	/// \return A pointer to the data at the specified index.
 	////////////////////////////////////////////////////////////
 	void* (*getData)(stdList*, unsigned int);
+
 	////////////////////////////////////////////////////////////
-	/// \brief Return the size of the list
+	/// \brief Get the number of elements currently in the list.
 	///
-	/// \param stdList* The list you are using
+	/// \param stdList* The list you are using.
+	/// \return The size of the list as an `int`.
 	////////////////////////////////////////////////////////////
 	int (*size)(stdList*);
+
 	////////////////////////////////////////////////////////////
-	/// \brief Clear the list. This function does not free memory allocated outside the list function, so make sure all memory is freed properly before calling it.
+	/// \brief Clear all elements from the list.
+	///        This function does not free memory allocated outside the list.
+	///        Ensure all external memory is properly freed before calling this function.
 	///
-	/// \param stdList** Address of the list (example: &list).
+	/// \param stdList* The list you are using.
 	////////////////////////////////////////////////////////////
 	void (*clear)(stdList*);
+
 	////////////////////////////////////////////////////////////
-	/// \brief Destroy the list, use it ONLY when you don't need the list anymore.
+	/// \brief Destroy the list and release all associated resources.
+	///        Use this function only when you no longer need the list.
 	///
-	/// \param stdList* The list you are using
+	/// \param stdList** The address of the list to destroy (e.g., `&list`).
 	////////////////////////////////////////////////////////////
 	void (*destroy)(stdList**);
 };
 
-stdList* stdList_Create(size_t elementSize, int size, ...);
+////////////////////////////////////////////////////////////
+/// \brief Create a new list.
+///
+/// \param size_t The size of the elements to store in the list.
+/// \param int The initial size of the list.
+/// \param ... Additional arguments, if needed.
+/// \return A pointer to the newly created `stdList` structure.
+////////////////////////////////////////////////////////////
+stdList LIBSTD_API* stdList_Create(size_t elementSize, int size, ...);
 
-#endif LIST_H_
+#endif // LIST_H_

@@ -19,15 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <None Include="DLL.licenseheader" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Export.h" />
     <ClInclude Include="List.h" />
+    <ClInclude Include="Pool.h" />
+    <ClInclude Include="String.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="List.c" />
+    <ClCompile Include="Pool.c" />
+    <ClCompile Include="String.c" />
     <ClCompile Include="Vector.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="DLL.licenseheader" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -116,7 +121,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;DLL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CRT_SECURE_NO_WARNINGS;DLL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>

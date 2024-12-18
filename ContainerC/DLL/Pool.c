@@ -21,7 +21,7 @@ struct Pool
 static void AddElement(stdPool* pool, void* element)
 {
 	stdVector* vector = pool->_Data->container;
-	for (int i = 0; i < vector->size(vector); i++) 
+	for (int i = 0; i < vector->size(vector); i++)
 	{
 		Data* it = ((Data*)vector->getData(vector, i));
 		if (it->isFree)
@@ -64,14 +64,14 @@ static void* GetElement(stdPool* pool, unsigned int index)
 	int id = 0;
 
 
-	for (int i = 0; i < pool->_Data->container->size(pool->_Data->container); i++) 
+	for (int i = 0; i < pool->_Data->container->size(pool->_Data->container); i++)
 	{
 		Data* it = ((Data*)pool->_Data->container->getData(pool->_Data->container, i));
 		if (id == index && !it->isFree)
 		{
 			return it->data;
-		} 
-		if (!it->isFree) 
+		}
+		if (!it->isFree)
 		{
 			id++;
 		}
@@ -96,7 +96,7 @@ static void Clear(stdPool* pool)
 static void Destroy(stdPool** pool)
 {
 	Pool* data = (*pool)->_Data;
-	for (int i = 0; i < data->container->size(data->container); i++) 
+	for (int i = 0; i < data->container->size(data->container); i++)
 	{
 		Data* it = ((Data*)data->container->getData(data->container, i));
 		free(it->data);
