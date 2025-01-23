@@ -135,7 +135,10 @@ static void deleteLink(Link** listBegin, Link* element, List** list)
 			element->pBack->pNext = next;
 			next->pBack = element->pBack;
 		}
-
+		if(element == (*list)->endList)
+		{
+			(*list)->endList = element->pBack;
+		}
 
 		free(element->data);
 		free(element);
@@ -147,34 +150,39 @@ static void deleteLink(Link** listBegin, Link* element, List** list)
 static void stdList_Erase(stdList* listBegin, unsigned int index)
 {
 	Link* tmpLink = listBegin->_Data->listBegin;
+	int newId = -1;
 	while (tmpLink != NULL)
 	{
 		if (tmpLink->id == index)
 		{
+			newId = tmpLink->id;
 			deleteLink(&listBegin->_Data->listBegin, tmpLink, &listBegin->_Data);
 			break;
 		}
 		tmpLink = tmpLink->pNext;
 	}
 
-	int newId = listBegin->_Data->size - 1;
-	tmpLink = listBegin->_Data->listBegin;
+	tmpLink = listBegin->_Data->endList;
+
+	if(newId < 0)
+		return;
+
 	while (tmpLink != NULL)
 	{
-		if (tmpLink->id == newId)
+		tmpLink->id--;
+		if (newId == tmpLink->id)
 			break;
-		tmpLink->id = newId--;
-		tmpLink = tmpLink->pNext;
+		tmpLink = tmpLink->pBack;
 	}
 
 }
 
 static void stdList_Clear(stdList* listBegin)
 {
-	int size = listBegin->_Data->size - 1;
-	for (int i = size; i >= 0; i--)
+	int size = listBegin->_Data->size;
+	for (int i = 0; i < size; i++)
 	{
-		stdList_Erase(listBegin, i);
+		stdList_Erase(listBegin, 0);
 	}
 
 }
