@@ -20,8 +20,7 @@
 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef LIST_H_
-#define LIST_H_
+#pragma once
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,7 +41,7 @@
 typedef struct List List;
 typedef struct stdList stdList;
 
-struct stdList
+struct LIBSTD_API stdList
 {
 	////////////////////////////////////////////////////////////
 	/// \brief Contains all the data of the list. DO NOT USE IT DIRECTLY.
@@ -112,4 +111,3 @@ struct stdList
 ////////////////////////////////////////////////////////////
 stdList LIBSTD_API* stdList_Create(size_t elementSize, int size, ...);
 
-#endif // LIST_H_

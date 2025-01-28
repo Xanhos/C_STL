@@ -54,7 +54,7 @@
 typedef struct Vector Vector;
 typedef struct stdVector stdVector;
 
-struct stdVector
+struct LIBSTD_API stdVector
 {
 	////////////////////////////////////////////////////////////
 	/// \brief Contains all the data of the vector. DO NOT USE IT DIRECTLY.

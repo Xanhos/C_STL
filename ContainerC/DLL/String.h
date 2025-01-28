@@ -34,7 +34,7 @@
 typedef struct String String;
 typedef struct stdString stdString;
 
-struct stdString {
+struct LIBSTD_API stdString {
 
 	////////////////////////////////////////////////////////////
 	/// \brief Contains all the data of the string. DO NOT USE IT DIRECTLY.

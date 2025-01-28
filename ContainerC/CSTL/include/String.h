@@ -21,8 +21,7 @@
 */
 
 
-#ifndef STRING_H_
-#define STRING_H_
+#pragma once
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,7 +33,7 @@
 typedef struct String String;
 typedef struct stdString stdString;
 
-struct stdString {
+struct LIBSTD_API stdString {
 
 	////////////////////////////////////////////////////////////
 	/// \brief Contains all the data of the string. DO NOT USE IT DIRECTLY.
@@ -208,4 +207,3 @@ char LIBSTD_API* FloatToString(float value, unsigned int decimalNumber);
 ////////////////////////////////////////////////////////////
 char LIBSTD_API* CharToString(char value);
 
-#endif // STRING_H_

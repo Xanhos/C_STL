@@ -1,28 +1,40 @@
 /*
-    Author: GRALLAN Yann
+	Author: GRALLAN Yann
 
-    Description: Generic C container library
+	Description: Generic C container library
 
-    Date: 2024/02/26
+	Date: 2024/02/26
 
-    MIT License
+	MIT License
 
-    Copyright (c) 2024 GRALLAN Yann
+	Copyright (c) 2024 GRALLAN Yann
 
 
-    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #include "Vector.h"
 #include <stdarg.h>
 #include <stdbool.h>
+
+#define VEC_OFR(vec,index)\
+	if (index > vec->size(vec))\
+	{\
+		printf("Vector out of range ! (index %d, vector max size %d)\n", index, vec->size(vec));\
+		abort();\
+	}\
+	else if (index < 0)\
+	{\
+		printf("Index cannot be under 0 !\n");\
+		abort();\
+	}\
 
 #define INIT_VEC_SIZE 1
 
@@ -50,7 +62,7 @@ static int stdVector_getSize(stdVector* T)
 static void stdVector_Add(stdVector* T, void* element)
 {
 	if ((T->_Data->elementSize * T->_Data->size) < (T->_Data->elementSize * T->_Data->memoryCapacity))
-	{	
+	{
 		char* tempData = (char*)T->_Data->type;
 		memcpy(tempData + T->_Data->size * T->_Data->elementSize, element, T->_Data->elementSize);
 		T->_Data->size++;
@@ -76,7 +88,7 @@ static void stdVector_Add(stdVector* T, void* element)
 
 static void stdVector_Remove(stdVector* T, int index)
 {
-	VEC_OFR(T, index);	
+	VEC_OFR(T, index);
 
 	char* tempData = (char*)T->_Data->type;
 
@@ -84,7 +96,7 @@ static void stdVector_Remove(stdVector* T, int index)
 
 	for (int i = 0; i < offset; i++)
 	{
-		memcpy(tempData + (index + i)* T->_Data->elementSize, tempData + (index + i + 1) * T->_Data->elementSize, T->_Data->elementSize);
+		memcpy(tempData + (index + i) * T->_Data->elementSize, tempData + (index + i + 1) * T->_Data->elementSize, T->_Data->elementSize);
 	}
 
 	T->_Data->size--;
@@ -115,7 +127,7 @@ static void stdVector_Clear(stdVector* T)
 
 static void stdVector_Reserve(stdVector* T, unsigned int newCapacity)
 {
-	if(newCapacity > T->_Data->memoryCapacity)
+	if (newCapacity > T->_Data->memoryCapacity)
 	{
 		void* temp = realloc(T->_Data->type, newCapacity * T->_Data->elementSize);
 
@@ -129,7 +141,7 @@ static void stdVector_ShrinkToFit(stdVector* T)
 {
 	T->_Data->memoryCapacity = T->_Data->size;
 
-	
+
 	void* temp = calloc(T->_Data->memoryCapacity, T->_Data->elementSize);
 
 	char* newData = (char*)temp;
@@ -137,8 +149,8 @@ static void stdVector_ShrinkToFit(stdVector* T)
 
 
 	for (int i = 0; i < T->_Data->size; i++)
-	{		
-		memcpy(newData + i * T->_Data->elementSize, oldData + i * T->_Data->elementSize, T->_Data->elementSize);	
+	{
+		memcpy(newData + i * T->_Data->elementSize, oldData + i * T->_Data->elementSize, T->_Data->elementSize);
 	}
 
 	assert(temp != NULL);

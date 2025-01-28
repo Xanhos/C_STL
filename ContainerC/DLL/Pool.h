@@ -34,7 +34,7 @@
 typedef struct Pool Pool;
 typedef struct stdPool stdPool;
 
-struct stdPool
+struct LIBSTD_API stdPool
 {
 	////////////////////////////////////////////////////////////
 	/// \brief Contains all the data of the pool. DO NOT USE IT DIRECTLY.
@@ -74,7 +74,7 @@ struct stdPool
 	/// \param stdPool* The pool you are using.
 	/// \return The size of the pool as an `int`.
 	////////////////////////////////////////////////////////////
-	size_t (*size)(stdPool*);
+	size_t(*size)(stdPool*);
 
 	////////////////////////////////////////////////////////////
 	/// \brief Clear all elements from the pool.

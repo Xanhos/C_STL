@@ -20,9 +20,7 @@
 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-
-#ifndef POOL_H_
-#define POOL_H_
+#pragma once
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,7 +32,7 @@
 typedef struct Pool Pool;
 typedef struct stdPool stdPool;
 
-struct stdPool
+struct LIBSTD_API stdPool
 {
 	////////////////////////////////////////////////////////////
 	/// \brief Contains all the data of the pool. DO NOT USE IT DIRECTLY.
@@ -74,7 +72,7 @@ struct stdPool
 	/// \param stdPool* The pool you are using.
 	/// \return The size of the pool as an `int`.
 	////////////////////////////////////////////////////////////
-	size_t (*size)(stdPool*);
+	size_t(*size)(stdPool*);
 
 	////////////////////////////////////////////////////////////
 	/// \brief Clear all elements from the pool.
@@ -104,4 +102,3 @@ struct stdPool
 ////////////////////////////////////////////////////////////
 stdPool LIBSTD_API* stdPool_Create(size_t type, unsigned int size, ...);
 
-#endif // POOL_H_

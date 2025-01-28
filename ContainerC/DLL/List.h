@@ -42,7 +42,7 @@
 typedef struct List List;
 typedef struct stdList stdList;
 
-struct stdList
+struct LIBSTD_API stdList
 {
 	////////////////////////////////////////////////////////////
 	/// \brief Contains all the data of the list. DO NOT USE IT DIRECTLY.

@@ -100,7 +100,7 @@ static const char* stdStringGetConst(const stdString* str)
 
 static size_t stdStringSize(stdString* str)
 {
-	return str->_Data->length;
+	return (size_t)str->_Data->length;
 }
 
 void stdStringPrint(stdString* str)
@@ -151,7 +151,7 @@ stdString* stdStringCreate(const char* string)
 char* AddChar(char* string_one, char* string_two)
 {
 	INIT_LIST;
-	int totalSize = (int)strlen(string_one) + (int)strlen(string_two) + 1;
+	int totalSize = strlen(string_one) + strlen(string_two) + 1;
 	char* tmp = calloc(totalSize, sizeof(char));
 	if (tmp)
 	{
@@ -163,7 +163,6 @@ char* AddChar(char* string_one, char* string_two)
 		ressources_list->push_back(ressources_list, &tmp);
 		return tmp;
 	}
-	return NULL;
 }
 
 
@@ -219,7 +218,7 @@ char* FloatToString(float value, unsigned int decimalNumber)
 	char* tmp = calloc(128, sizeof(char));
 	if (tmp)
 	{
-		sprintf_s(tmp, 128, AddChar("%.",AddChar(IntToString(decimalNumber),"f")), value);
+		sprintf_s(tmp, 128, AddChar("%.", AddChar(IntToString(decimalNumber), "f")), value);
 		if (ressources_list)
 		{
 			ressources_list->push_back(ressources_list, &tmp);

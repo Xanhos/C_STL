@@ -1,3 +1,4 @@
+
 /*
 	Author: GRALLAN Yann
 
@@ -257,7 +258,15 @@ stdList* stdList_Create(size_t elementSize, int size, ...)
 	for (int i = 0; i < size; i++)
 	{
 		void* vaNext = va_arg(params, void*);
-		stdList_Add(list, vaNext);
+		stdList_Add(list, vaNext);/*
+		Link* tmp = (Link*)calloc(1, sizeof(Link));
+		assert(tmp != NULL);
+		tmp->id = i;
+		tmp->data = calloc(1, elementSize);
+		char* tempData = (char*)tmp->data;
+		assert(tempData != NULL);
+		memcpy(tempData, vaNext, elementSize);
+		AddElement(&list->_Data->listBegin, tmp, &list->_Data);*/
 	}
 
 	list->size = &stdList_GetSize;

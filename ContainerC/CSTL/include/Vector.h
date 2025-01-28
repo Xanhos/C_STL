@@ -20,8 +20,7 @@
 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef VECTOR_H_
-#define VECTOR_H_
+#pragma once
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -54,7 +53,7 @@
 typedef struct Vector Vector;
 typedef struct stdVector stdVector;
 
-struct stdVector
+struct LIBSTD_API stdVector
 {
 	////////////////////////////////////////////////////////////
 	/// \brief Contains all the data of the vector. DO NOT USE IT DIRECTLY.
@@ -146,5 +145,3 @@ struct stdVector
 /// \return stdVector* A pointer to the newly created vector.
 ////////////////////////////////////////////////////////////
 stdVector LIBSTD_API* stdVector_Create(size_t type, unsigned int size, ...);
-
-#endif // VECTOR_H_
