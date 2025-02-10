@@ -37,9 +37,15 @@ int main()
 			printf("List\n");
 			stdList* list = STD_LIST_CREATE(int, 0);
 
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 2; i++)
 			{
 				list->push_back(list, STD_CONVERT(int, {i}));
+			}
+
+			int size = list->size(list) - 1;
+			for (int i = size; i > -1; i--)
+			{
+				list->erase(list, i);
 			}
 
 			for (int i = 0; i < list->size(list); i++)

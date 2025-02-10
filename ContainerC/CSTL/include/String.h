@@ -21,7 +21,8 @@
 */
 
 
-#pragma once
+#ifndef STRING_H_
+#define STRING_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -207,3 +208,4 @@ char LIBSTD_API* FloatToString(float value, unsigned int decimalNumber);
 ////////////////////////////////////////////////////////////
 char LIBSTD_API* CharToString(char value);
 
+#endif // STRING_H_

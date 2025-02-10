@@ -138,6 +138,7 @@ static void deleteLink(Link** listBegin, Link* element, List** list)
 		if(element == (*list)->endList)
 		{
 			(*list)->endList = element->pBack;
+			element->pBack->pNext = NULL;
 		}
 
 		free(element->data);
@@ -164,7 +165,7 @@ static void stdList_Erase(stdList* listBegin, unsigned int index)
 
 	tmpLink = listBegin->_Data->endList;
 
-	if(newId < 0)
+	if(newId < 0 || newId >= listBegin->_Data->size)
 		return;
 
 	while (tmpLink != NULL)

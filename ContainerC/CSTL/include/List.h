@@ -20,7 +20,8 @@
 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#pragma once
+#ifndef LIST_H_
+#define LIST_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -111,3 +112,4 @@ struct LIBSTD_API stdList
 ////////////////////////////////////////////////////////////
 stdList LIBSTD_API* stdList_Create(size_t elementSize, int size, ...);
 
+#endif // LIST_H_
