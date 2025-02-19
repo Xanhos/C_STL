@@ -34,15 +34,8 @@ static void stdStringAppend(stdString* str, const char* string)
 	assert(str->_Data->str != NULL);
 	strcpy_s(str->_Data->str + str->_Data->length, length + 1, string);
 	str->_Data->length += length;
-	if (ressources_list)
-	{
-		for (int iterator = 0; iterator < ressources_list->size(ressources_list); iterator++)
-		{
-			char** it_name = STD_GETDATA(ressources_list, char*, iterator);
-			free(*it_name);
-		}
-		ressources_list->clear(ressources_list);
-	}
+
+	CleanUpTempMemory();
 }
 
 static void stdStringInsert(stdString* str, const char* string, size_t index)
@@ -56,10 +49,8 @@ static void stdStringInsert(stdString* str, const char* string, size_t index)
 	memmove(str->_Data->str + index + length, str->_Data->str + index, str->_Data->length - index + 1);
 	memcpy(str->_Data->str + index, string, length);
 	str->_Data->length += length;
-	if (ressources_list)
-	{
-		ressources_list->clear(ressources_list);
-	}
+
+	CleanUpTempMemory();
 }
 
 static void stdStringtRemove(stdString* str, size_t index, size_t length)
@@ -71,10 +62,8 @@ static void stdStringtRemove(stdString* str, size_t index, size_t length)
 	assert(tmp);
 	str->_Data->str = tmp;
 	assert(str->_Data->str != NULL);
-	if (ressources_list)
-	{
-		ressources_list->clear(ressources_list);
-	}
+
+	CleanUpTempMemory();
 }
 
 static void stdStringReplace(stdString* str, const char* string)
@@ -87,10 +76,8 @@ static void stdStringReplace(stdString* str, const char* string)
 	assert(str->_Data->str != NULL);
 	strcpy_s(str->_Data->str, length2 + 1, string);
 	str->_Data->length = length2;
-	if (ressources_list)
-	{
-		ressources_list->clear(ressources_list);
-	}
+
+	CleanUpTempMemory();
 }
 
 static const char* stdStringGetConst(const stdString* str)
@@ -113,6 +100,19 @@ char* CopyAndAllocChar(const char* source)
 	return _strdup(source);
 }
 
+void CleanUpTempMemory()
+{
+	if (ressources_list)
+	{
+		for (int iterator = 0; iterator < ressources_list->size(ressources_list); iterator++)
+		{
+			char** it_name = STD_GETDATA(ressources_list, char*, iterator);
+			free(*it_name);
+		}
+		ressources_list->clear(ressources_list);
+	}
+}
+
 stdString* stdStringCreate(const char* string)
 {
 	INIT_LIST;
@@ -126,15 +126,7 @@ stdString* stdStringCreate(const char* string)
 	assert(str->_Data->str != NULL);
 	strcpy_s(str->_Data->str, str->_Data->length + 1, string);
 
-	if (ressources_list)
-	{
-		for (int iterator = 0; iterator < ressources_list->size(ressources_list); iterator++)
-		{
-			char** it_name = STD_GETDATA(ressources_list, char*, iterator);
-			free(*it_name);
-		}
-		ressources_list->clear(ressources_list);
-	}
+	CleanUpTempMemory();
 
 	str->append = &stdStringAppend;
 	str->insert = &stdStringInsert;

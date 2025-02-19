@@ -122,6 +122,8 @@ void stdStringPrint(stdString* str);
 ////////////////////////////////////////////////////////////
 char* CopyAndAllocChar(const char* source);
 
+void CleanUpTempMemory();
+
 /*
  * Description of utility functions:
  *
