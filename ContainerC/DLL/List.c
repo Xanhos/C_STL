@@ -26,14 +26,6 @@
 
 #define MIN(a,b) ((a < b) ? a : b)
 
-typedef struct Link Link;
-struct Link
-{
-	void* data;
-	Link* pNext;
-	Link* pBack;
-	int id;
-};
 
 struct List
 {
@@ -109,6 +101,10 @@ static void* stdList_GetData2(stdList* listBegin, unsigned int index)
 	}
 }
 
+static void* stdList_GetFirstLink(stdList* listBegin)
+{
+	return listBegin->_Data->listBegin;
+}
 
 
 static void deleteLink(Link** listBegin, Link* element, List** list)
@@ -259,20 +255,13 @@ stdList* stdList_Create(size_t elementSize, int size, ...)
 	for (int i = 0; i < size; i++)
 	{
 		void* vaNext = va_arg(params, void*);
-		stdList_Add(list, vaNext);/*
-		Link* tmp = (Link*)calloc(1, sizeof(Link));
-		assert(tmp != NULL);
-		tmp->id = i;
-		tmp->data = calloc(1, elementSize);
-		char* tempData = (char*)tmp->data;
-		assert(tempData != NULL);
-		memcpy(tempData, vaNext, elementSize);
-		AddElement(&list->_Data->listBegin, tmp, &list->_Data);*/
+		stdList_Add(list, vaNext);
 	}
 
 	list->size = &stdList_GetSize;
 	list->push_back = &stdList_Add;
 	list->getData = &stdList_GetData2;
+	list->get_first_link = &stdList_GetFirstLink;
 	list->erase = &stdList_Erase;
 	list->destroy = &stdList_Destroy;
 	list->clear = &stdList_Clear;

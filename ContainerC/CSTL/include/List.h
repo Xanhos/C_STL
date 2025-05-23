@@ -42,7 +42,16 @@
 typedef struct List List;
 typedef struct stdList stdList;
 
-struct LIBSTD_API stdList
+typedef struct Link Link;
+struct Link
+{
+	void* data;
+	Link* pNext;
+	Link* pBack;
+	int id;
+};
+
+struct stdList
 {
 	////////////////////////////////////////////////////////////
 	/// \brief Contains all the data of the list. DO NOT USE IT DIRECTLY.
@@ -75,6 +84,14 @@ struct LIBSTD_API stdList
 	/// \return A pointer to the data at the specified index.
 	////////////////////////////////////////////////////////////
 	void* (*getData)(stdList*, unsigned int);
+
+	////////////////////////////////////////////////////////////
+	/// \brief Retrieve the data first link of the list
+	///
+	/// \param stdList* The list you are using.
+	/// \return A pointer to the first link of the list.
+	////////////////////////////////////////////////////////////
+	Link* (*get_first_link)(stdList*);
 
 	////////////////////////////////////////////////////////////
 	/// \brief Get the number of elements currently in the list.

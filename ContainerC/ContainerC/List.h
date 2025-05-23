@@ -42,6 +42,15 @@
 typedef struct List List;
 typedef struct stdList stdList;
 
+typedef struct Link Link;
+struct Link
+{
+	void* data;
+	Link* pNext;
+	Link* pBack;
+	int id;
+};
+
 struct stdList
 {
 	////////////////////////////////////////////////////////////
@@ -75,6 +84,17 @@ struct stdList
 	/// \return A pointer to the data at the specified index.
 	////////////////////////////////////////////////////////////
 	void* (*getData)(stdList*, unsigned int);
+
+	////////////////////////////////////////////////////////////
+	/// \brief Retrieve the data at the specified index.
+	///        The return value must be cast to the desired type
+	///        (e.g., `(int)list->getData(&list, 0)` if the list stores integers).
+	///
+	/// \param stdList* The list you are using.
+	/// \param unsigned int The index of the element to retrieve.
+	/// \return A pointer to the data at the specified index.
+	////////////////////////////////////////////////////////////
+	Link* (*get_first_link)(stdList*);
 
 	////////////////////////////////////////////////////////////
 	/// \brief Get the number of elements currently in the list.
