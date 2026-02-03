@@ -45,6 +45,43 @@
     type data_container_name = *data_container_name##_;\
     func}
 
+#define FOR_EACH_LIST_TEMP(list, type, it_name, data_container_name, func)          \
+do {                                                              \
+    Link* _it = (list)->get_first_link(list);                     \
+    while (_it != NULL) {                                         \
+        int it_name = _it->id;                                      \
+        type* data_container_name = (type*)(_it->data);                      \
+        func;                                                     \
+        _it = _it->pNext;                                         \
+    }                                                             \
+    list->destroy(&list)\
+} while (0)
+
+
+#define FOR_EACH_LIST(list, type, it_name, data_container_name, func)          \
+do {                                                              \
+    Link* _it = (list)->get_first_link(list);                     \
+    while (_it != NULL) {                                         \
+        int it_name = _it->id;                                      \
+        type* data_container_name = (type*)(_it->data);                      \
+        func;                                                     \
+        _it = _it->pNext;                                         \
+    }                                                             \
+} while (0)
+
+
+#define FOR_EACH_LIST_POINTER(list, type, it_name, data_container_name, func)\
+do {                                                              \
+    Link* _it = (list)->get_first_link(list);                     \
+    while (_it != NULL) {                                         \
+        int it_name = _it->id;                                    \
+		type* data_container_name##_ = (type*)(_it->data);				  \
+		type data_container_name = *data_container_name##_;							  \
+		func;                                                     \
+		_it = _it->pNext;                                         \
+	}                                                             \
+} while (0);
+
 
 #define STD_CONVERT(type, ...) \
 (void*)&(type){__VA_ARGS__}

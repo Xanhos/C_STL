@@ -6,7 +6,7 @@
       "hidden": true,
       "generator": "Ninja",
       "cacheVariables": {
-        "MY_DEFINES": "BUILDING_LIBSTD"
+        "MY_DEFINES": "DLL_EXPORTS"
       }
     },
     {

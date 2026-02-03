@@ -33,11 +33,11 @@
 #define STD_LIST_CREATE(type, size, ...) \
   stdList_Create(sizeof(type), size, __VA_ARGS__)
 
-#define STD_LIST_CREATE_EMPTY(type, size) \
-stdList_Create(sizeof(type), size)
+#define STD_LIST_CREATE_EMPTY(type) \
+stdList_Create(sizeof(type), 0)
 
 #define STD_LIST_PUSHBACK(list, type, ...) \
-	list->push_back(&list, (const void*)&(type)__VA_ARGS__)
+	list->push_back(&list, (const void*)&(type){__VA_ARGS__})
 
 typedef struct List List;
 typedef struct stdList stdList;

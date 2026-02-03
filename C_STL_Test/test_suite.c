@@ -153,6 +153,17 @@ static void Suite_List_GetFirstLink(void)
 	TEST_END();
 }
 
+static void Suite_List_ForEachAllElements(void)
+{
+    stdList* L = stdList_Create(sizeof(int), 2, STD_CONVERT(int, 1), STD_CONVERT(int, 2));
+    FOR_EACH_LIST(L, int, i , it,
+        TEST_ASSERT(it != NULL, "For each element is not null");
+    );
+    L->destroy(&L);
+    TEST_END();
+}
+
+
 /* ---------- Vector ---------- */
 static void Suite_Vector_CreateEmpty(void)
 {
@@ -553,6 +564,7 @@ void RunFullTestSuite(void)
 	Suite_List_EraseAllFromBack();
 	Suite_List_OneElementErase();
 	Suite_List_GetFirstLink();
+    Suite_List_ForEachAllElements();
 
 	printf("=== Suite Vector ===\n");
 	Suite_Vector_CreateEmpty();
