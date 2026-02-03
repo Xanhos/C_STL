@@ -2,7 +2,7 @@
 .cursor/
 .vs/
 .cmake_build/
-.bin/
+bin/
 *.tlog
 *.obj
 *.log
