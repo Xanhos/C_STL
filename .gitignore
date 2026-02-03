@@ -1,5 +1,8 @@
-
+.idea/
+.cursor/
 .vs/
+.cmake_build/
+.bin/
 *.tlog
 *.obj
 *.log
